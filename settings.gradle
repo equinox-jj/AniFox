@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "AniFox"
+include ':app'
+include ':features:anime'
+include ':features:discover'
+include ':features:favorite'
+include ':core:ui'
+include ':schema'
+include ':core:util'

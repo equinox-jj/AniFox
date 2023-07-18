@@ -1,0 +1,151 @@
+query AnimeQuery($page: Int, $perPage: Int, $sort: [MediaSort], $search: String, $type: MediaType, $mediaId: Int, $language: StaffLanguage, $status: MediaStatus, $format: MediaFormat, $isAdult: Boolean, $popularity: Int, $isLicensed: Boolean, $tag: String, $season: MediaSeason, $averageScore: Int, $source: MediaSource) @nonnull {
+    Page(page: $page, perPage: $perPage) @nonnull {
+        media(sort: $sort, search: $search, type: $type, status: $status, format: $format, isAdult: $isAdult, popularity: $popularity, isLicensed: $isLicensed, tag: $tag, season: $season, averageScore: $averageScore, source: $source) @nonnull {
+            id
+            idMal
+            title @nonnull {
+                romaji
+                english
+                native
+            }
+            type
+            format
+            status
+            description
+            startDate @nonnull {
+                year
+                month
+                day
+            }
+            endDate @nonnull {
+                year
+                month
+                day
+            }
+            episodes
+            duration
+            chapters
+            volumes
+            coverImage @nonnull {
+                extraLarge
+                large
+                medium
+                color
+            }
+            bannerImage
+            genres
+            averageScore
+            meanScore
+            popularity
+        }
+    }
+    Media(id: $mediaId) @nonnull {
+        id
+        title @nonnull {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        description
+        status
+        startDate @nonnull {
+            year
+            month
+            day
+        }
+        endDate @nonnull {
+            year
+            month
+            day
+        }
+        episodes
+        duration
+        chapters
+        volumes
+        trailer @nonnull {
+            id
+            site
+            thumbnail
+        }
+        coverImage @nonnull {
+            extraLarge
+            large
+            medium
+            color
+        }
+        bannerImage
+        genres
+        averageScore
+        meanScore
+        popularity
+        characters @nonnull {
+            edges @nonnull {
+                role
+                name
+                id
+                voiceActors(language: $language) {
+                    id
+                    name @nonnull {
+                        first
+                        middle
+                        last
+                        full
+                    }
+                    gender
+                    image @nonnull {
+                        medium
+                        large
+                    }
+                }
+                node @nonnull {
+                    id
+                    name @nonnull {
+                        first
+                        middle
+                        last
+                        full
+                    }
+                    image @nonnull {
+                        medium
+                        large
+                    }
+                    gender
+                }
+            }
+        }
+        reviews @nonnull {
+            nodes @nonnull {
+                id
+                userId
+                summary
+                body
+                user @nonnull {
+                    id
+                    name
+                    avatar @nonnull {
+                        large
+                        medium
+                    }
+                }
+            }
+        }
+        streamingEpisodes @nonnull {
+            title
+            thumbnail
+            url
+            site
+        }
+        studios @nonnull {
+            nodes @nonnull {
+                id
+                name
+                siteUrl
+            }
+        }
+        isAdult
+        type
+        format
+        hashtag
+    }
+}
