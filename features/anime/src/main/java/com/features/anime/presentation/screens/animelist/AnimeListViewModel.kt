@@ -3,9 +3,14 @@ package com.features.anime.presentation.screens.animelist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.util.Resource
+import com.core.util.Routes
+import com.core.util.Routes.DETAIL_SCREEN
+import com.core.util.UiEvent
 import com.features.anime.domain.repository.AnimeRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -13,6 +18,9 @@ class AnimeListViewModel(private val animeRepository: AnimeRepository) : ViewMod
 
     private val _state = MutableStateFlow(AnimeListState())
     val state = _state.asStateFlow()
+
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         onEvent(AnimeListEvent.OnUpcomingAnimeFetched)
@@ -27,8 +35,18 @@ class AnimeListViewModel(private val animeRepository: AnimeRepository) : ViewMod
             AnimeListEvent.OnPopularAnimeFetched -> getPopularAnime()
             AnimeListEvent.OnTopRatedAnimeFetched -> getTopRatedAnime()
             AnimeListEvent.OnUpcomingAnimeFetched -> getUpcomingAnime()
-            else -> {}
+            is AnimeListEvent.OnCarouselCardClicked -> {
+                setUiEvent(UiEvent.OnNavigate(route = event.route))
+            }
+
+            is AnimeListEvent.OnHorizontalCardClicked -> {
+                setUiEvent(UiEvent.OnNavigate(route = event.route))
+            }
         }
+    }
+
+    private fun setUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
+        _uiEvent.send(uiEvent)
     }
 
     private fun getUpcomingAnime() {
