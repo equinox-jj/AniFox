@@ -3,8 +3,6 @@ package com.features.anime.presentation.screens.animelist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.core.util.Resource
-import com.core.util.Routes
-import com.core.util.Routes.DETAIL_SCREEN
 import com.core.util.UiEvent
 import com.features.anime.domain.repository.AnimeRepository
 import kotlinx.coroutines.channels.Channel
@@ -36,16 +34,16 @@ class AnimeListViewModel(private val animeRepository: AnimeRepository) : ViewMod
             AnimeListEvent.OnTopRatedAnimeFetched -> getTopRatedAnime()
             AnimeListEvent.OnUpcomingAnimeFetched -> getUpcomingAnime()
             is AnimeListEvent.OnCarouselCardClicked -> {
-                setUiEvent(UiEvent.OnNavigate(route = event.route))
+                sendUiEvent(UiEvent.OnNavigate(route = event.route))
             }
 
             is AnimeListEvent.OnHorizontalCardClicked -> {
-                setUiEvent(UiEvent.OnNavigate(route = event.route))
+                sendUiEvent(UiEvent.OnNavigate(route = event.route))
             }
         }
     }
 
-    private fun setUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
+    private fun sendUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
         _uiEvent.send(uiEvent)
     }
 
